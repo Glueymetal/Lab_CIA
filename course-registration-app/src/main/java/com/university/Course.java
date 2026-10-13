@@ -58,4 +58,16 @@ public class Course {
     public void incrementEnrollment() {
         currentEnrollment++;
     }
+
+    public void decrementEnrollment() {
+        if (currentEnrollment > 1)
+        {
+            currentEnrollment--;
+        }
+        else
+        {
+            currentEnrollment = 0;
+        }
+        
+    }
 }
