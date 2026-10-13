@@ -150,4 +150,58 @@ class RegistrationServiceTest {
         assertFalse(result);
         assertFalse(student.isRegistered("CS301"));
     }
+
+    @Test 
+    void ShouldRejectRegistrationatMaxCapacity()
+    {
+        Student student1 = new Student("S101", "Anita");
+        Student student2 = new Student("S102", "Berry");
+        Student student3 = new Student("S103", "Clara");
+
+        Course course = new Course(
+                "CS301",
+                "Data Structures",
+                4,
+                2,
+                true,
+                null
+        );
+
+        RegistrationService service = new RegistrationService();
+
+        assertEquals(true,service.register(student1, course));
+        assertEquals(true,service.register(student2, course));
+        boolean result = service.register(student3, course);
+        assertFalse(result);
+        assertEquals(2, course.getCurrentEnrollment());
+        assertEquals(0, student3.getTotalCredits());
+        assertFalse(student3.isRegistered("CS301"));
+
+    }
+
+    @Test
+    void AcceptatMostCapacity()
+    {
+        Student student1 = new Student("S101", "Anita");
+        Student student2 = new Student("S102", "Berry");
+        Student student3 = new Student("S103", "Clara");
+
+        Course course = new Course(
+                "CS301",
+                "Data Structures",
+                4,
+                3,
+                true,
+                null
+        );
+
+        RegistrationService service = new RegistrationService();
+
+        assertEquals(true,service.register(student1, course));
+        assertEquals(true,service.register(student2, course));
+        assertEquals(true,service.register(student3, course));
+        assertEquals(3, course.getCurrentEnrollment());
+        assertEquals(4, student3.getTotalCredits());
+        assertTrue(student3.isRegistered("CS301"));
+    }
 }
