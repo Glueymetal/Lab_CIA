@@ -46,7 +46,7 @@ pipeline {
                 echo 'Failure'
             }
             always{
-                'Execution finished'
+                echo 'Execution finished'
             }
         }
     }
