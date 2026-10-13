@@ -204,4 +204,85 @@ class RegistrationServiceTest {
         assertEquals(4, student3.getTotalCredits());
         assertTrue(student3.isRegistered("CS301"));
     }
+
+    @Test
+    void SuccessfulWithdrawal()
+    {
+        Student student = new Student("S101", "Anita");
+
+        Course course = new Course(
+                "CS301",
+                "Data Structures",
+                4,
+                30,
+                true,
+                null
+        );
+
+        RegistrationService service = new RegistrationService();
+        service.register(student, course);
+        boolean result = service.withdrawal(student,course);
+        assertTrue(result);
+        assertFalse(student.isRegistered("CS301"));
+        assertEquals(0, student.getTotalCredits());
+        assertEquals(0, course.getCurrentEnrollment());
+    }
+
+    @Test
+    void WithdrawalofNonRegisteredCourse()
+    {
+        Student student = new Student("S101", "Anita");
+
+        Course course = new Course(
+                "CS301",
+                "Data Structures",
+                4,
+                1,
+                true,
+                null
+        );
+
+        Course course1 = new Course(
+                "CS301",
+                "Data Structures",
+                4,
+                1,
+                true,
+                null
+        );
+
+        RegistrationService service = new RegistrationService();
+        boolean result = service.withdrawal(student,course);
+        assertFalse(result);
+    }
+
+    @Test
+    void ApplyingtoVacantSeatsAfterWithdrawal()
+    {
+        Student student = new Student("S101", "Anita");
+        Student student1 = new Student("S102", "Berry");
+
+        Course course = new Course(
+                "CS301",
+                "Data Structures",
+                4,
+                1,
+                true,
+                null
+        );
+
+        RegistrationService service = new RegistrationService();
+        service.register(student, course);
+        service.withdrawal(student,course);
+        assertFalse(student1.isRegistered("CS301"));
+        assertEquals(0, student1.getTotalCredits());
+        assertEquals(0, course.getCurrentEnrollment());
+
+        service.register(student1, course);
+        assertTrue(student1.isRegistered("CS301"));
+        assertEquals(4, student1.getTotalCredits());
+        assertEquals(1, course.getCurrentEnrollment());
+
+    }
+
 }
