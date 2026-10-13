@@ -55,4 +55,9 @@ public class Student {
         registeredCourses.add(courseCode);
         totalCredits += credits;
     }
+
+    public void removeRegistration(String courseCode, int credits){
+        registeredCourses.remove(courseCode);
+        totalCredits = Math.max(totalCredits - credits,0);
+    }
 }
